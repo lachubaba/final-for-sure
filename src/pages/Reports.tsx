@@ -138,13 +138,20 @@ export default function Reports() {
         toast.success("Report generated and saved!");
         
         // Trigger automatic download
-        const a = document.createElement("a");
-        a.href = data.url;
-        a.target = "_blank";
-        a.download = data.fileName;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+        try {
+          // Dynamic import for Capacitor Browser
+          const { Browser } = await import('@capacitor/browser');
+          await Browser.open({ url: data.url });
+        } catch (e) {
+          // Fallback for web
+          const a = document.createElement("a");
+          a.href = data.url;
+          a.target = "_blank";
+          a.download = data.fileName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
         
       } else {
         toast.error(data.error || "Failed to generate report");
@@ -222,10 +229,19 @@ export default function Reports() {
                     {report.dateRange}
                   </span>
                 </div>
-                <Button asChild variant="outline" size="sm">
-                  <a href={report.driveLink} target="_blank" rel="noopener noreferrer">
-                    <Download className="w-4 h-4 mr-2" /> View
-                  </a>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={async () => {
+                    try {
+                      const { Browser } = await import('@capacitor/browser');
+                      await Browser.open({ url: report.driveLink });
+                    } catch (e) {
+                      window.open(report.driveLink, '_blank');
+                    }
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-2" /> View
                 </Button>
               </Card>
             ))}
