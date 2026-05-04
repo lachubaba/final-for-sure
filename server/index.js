@@ -146,8 +146,8 @@ app.post('/api/pdf/generate', authenticateToken, async (req, res) => {
       return res.status(500).json({ error: 'Google Drive client is not configured.' });
     }
     
-    if (!drive || !db) {
-      return res.status(500).json({ error: 'Google Drive or Firebase Admin not configured.' });
+    if (!drive) {
+      return res.status(500).json({ error: 'Google Drive is not configured.' });
     }
     
     // Create Document
@@ -237,12 +237,14 @@ app.post('/api/pdf/generate', authenticateToken, async (req, res) => {
     const downloadUrl = updatedFile.data.webViewLink;
     
     try {
-      await db.collection('reports').add({
-        fileName: fileName.replace('reports/', ''),
-        driveLink: downloadUrl,
-        dateRange: dateRange,
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
-      });
+      if (db) {
+        await db.collection('reports').add({
+          fileName: fileName.replace('reports/', ''),
+          driveLink: downloadUrl,
+          dateRange: dateRange,
+          createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+      }
     } catch (dbError) {
       console.error("Warning: Failed to save metadata to Firestore:", dbError.message);
       // Continue anyway so the user gets their PDF
