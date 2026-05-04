@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sole Sync design system — HSL only */
+
+@layer base {
+  :root {
+    --background: 210 17% 98%;       /* #F8F9FA */
+    --foreground: 0 0% 6%;           /* #0f0f0f */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 6%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 6%;
+
+    --primary: 210 56% 23%;          /* #1A3A5C navy */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 33% 95%;        /* #EEF2F7 */
+    --secondary-foreground: 210 56% 23%;
+
+    --muted: 214 33% 95%;
+    --muted-foreground: 213 14% 49%; /* #6B7A8D */
+
+    --accent: 25 92% 47%;            /* #E8700A orange */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 75% 57%;        /* #E53E3E */
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 145 47% 43%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive-soft: 0 100% 97%;  /* #FFF0F0 */
+
+    --border: 213 27% 90%;
+    --input: 213 27% 90%;
+    --ring: 210 56% 23%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 215 30% 8%;          /* deep navy-black */
+    --foreground: 210 17% 96%;
+
+    --card: 215 28% 12%;
+    --card-foreground: 210 17% 96%;
+
+    --popover: 215 28% 12%;
+    --popover-foreground: 210 17% 96%;
+
+    --primary: 25 92% 52%;             /* orange becomes primary in dark */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 25% 18%;
+    --secondary-foreground: 210 17% 96%;
+
+    --muted: 215 25% 18%;
+    --muted-foreground: 213 14% 65%;
+
+    --accent: 25 92% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 145 47% 48%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive-soft: 0 50% 18%;
+
+    --border: 215 20% 22%;
+    --input: 215 20% 22%;
+    --ring: 25 92% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body, #root {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
