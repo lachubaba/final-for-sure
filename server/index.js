@@ -110,9 +110,13 @@ app.get('/api/oauth2callback', async (req, res) => {
         fs.writeFileSync('./tokens.json', JSON.stringify(tokens));
         console.log("Tokens saved to tokens.json");
     } catch(fsError) {
-         console.warn("Could not save tokens to disk, outputting to console instead:", JSON.stringify(tokens));
+         console.warn("Could not save tokens to disk.");
     }
-    res.send("Authentication successful! You can close this tab and generate PDFs now.");
+    console.log("=== IMPORTANT: COPY THIS FOR RENDER ===");
+    console.log("Set GOOGLE_OAUTH_TOKENS to:");
+    console.log(JSON.stringify(tokens));
+    console.log("=======================================");
+    res.send("Authentication successful! Check your server console log to copy your GOOGLE_OAUTH_TOKENS.");
   } catch (error) {
     res.status(500).send("Authentication failed: " + error.message);
   }
@@ -143,7 +147,11 @@ app.post('/api/pdf/generate', authenticateToken, async (req, res) => {
     }
 
     if (!oauth2Client) {
-      return res.status(500).json({ error: 'Google Drive client is not configured.' });
+      return res.status(500).json({ error: 'Google Drive client is not configured (Missing Client ID/Secret).' });
+    }
+    
+    if (!oauth2Client.credentials || Object.keys(oauth2Client.credentials).length === 0) {
+      return res.status(500).json({ error: 'Google Drive is not authenticated! You must visit /api/auth on your server to generate tokens first.' });
     }
     
     if (!drive) {
